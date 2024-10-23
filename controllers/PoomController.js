@@ -2,6 +2,8 @@ const xml2js = require('xml2js');
 const cXMLCartForm = require('../models/cXMLCartModel'); // Adjust the path if necessary
 
 const POOM = async (req, res) => {
+
+    const frontendURL = process.env.NEXT_PUBLIC_FRONTEND_BASE_URL;
     console.log("Received JSON data:", req.body);
 
     try {
@@ -22,7 +24,7 @@ const POOM = async (req, res) => {
         await newCart.save();
 
         // Construct the redirect URL with the ID
-        const redirectUrl = `http://localhost:3000/main/display-cxml-cart?xmlDocId=${newCart._id.toString()}`;
+        const redirectUrl = `${frontendURL}/main/display-cxml-cart?xmlDocId=${newCart._id.toString()}`;
 
         // Redirect to the frontend URL
         res.redirect(redirectUrl);

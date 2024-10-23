@@ -1,7 +1,7 @@
 const OciCartForm = require('../models/OciCartModel'); // Adjust the path if necessary
 
 const OciCart = async (req, res) => {
-    const frontendURL = process.env.FRONTEND_BASE_URL || ''; // Correct way to access environment variables
+    const frontendURL = process.env.NEXT_PUBLIC_FRONTEND_BASE_URL; // Correct way to access environment variables
 
     console.log('Oci Cart', req.body);
 
