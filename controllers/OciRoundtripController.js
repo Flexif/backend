@@ -2,7 +2,7 @@ const axios = require('axios');
 const OciRoundtripForm = require ('../models/OciRoundtripModel');
 
 const OciLogin = async (req, res) => {
-    const backendURL = process.env.BACKEND_BASE_URL;
+    const backendURL = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
     const { baseURL, username, password, hookURL } = req.body;
 
     // Input validation: Ensure the baseURL, username, and password are provided
