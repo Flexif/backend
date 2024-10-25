@@ -25,6 +25,7 @@ const OciLogin = async (req, res) => {
 
         // Reconstruct the full URL with the updated hook_url parameter
         const OciPunchoutURL = `${url.origin}${url.pathname}?${params.toString()}`;
+        // console log the new Punchout URL
         console.log('Updated URL:', OciPunchoutURL);
 
         // Perform the axios POST request to the new URL

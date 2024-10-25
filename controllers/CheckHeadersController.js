@@ -63,7 +63,7 @@ const getSslTlsInfo = async (hostname) => {
 // Function to check CORS
 const checkCORS = async (url) => {
   try {
-    const response = await axios.get(url, { headers: { 'Origin': 'http://localhost:3000' } });
+    const response = await axios.get(url, { headers: { 'Origin': 'https://punchoutcheck.onrender.com' } });
     const headers = response.headers;
     return {
       corsHeaders: {
