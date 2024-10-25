@@ -15,7 +15,7 @@ const OciCart = async (req, res) => {
         const savedItem = await newItem.save();
 
         // Redirect to frontend with the saved item's ID
-        const redirectUrl = `${frontendURL}/main/display-oci-cart?id=${savedItem._id}`;
+        const redirectUrl = `${frontendURL}/display-oci-cart?id=${savedItem._id}`;
         res.redirect(redirectUrl);
 
     } catch (error) {

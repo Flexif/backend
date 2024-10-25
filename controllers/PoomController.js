@@ -24,7 +24,7 @@ const POOM = async (req, res) => {
         await newCart.save();
 
         // Construct the redirect URL with the ID
-        const redirectUrl = `${frontendURL}/main/display-cxml-cart?xmlDocId=${newCart._id.toString()}`;
+        const redirectUrl = `${frontendURL}/display-cxml-cart?xmlDocId=${newCart._id.toString()}`;
 
         // Redirect to the frontend URL
         res.redirect(redirectUrl);
