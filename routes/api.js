@@ -6,6 +6,7 @@ const PosrController = require('../controllers/PosrController');
 const OciController = require('../controllers/OciRoundtripController');
 const OciCartController = require('../controllers/OciCartController');
 const CheckHeadersController = require('../controllers/CheckHeadersController');
+const VisitorController = require('../controllers/VisitorControler');
 
 // Route to handle cxml punchout setup request
 router.post('/cxml-punchout', PosrController.POSR);
@@ -27,6 +28,9 @@ router.get('/cxml-data/:id', PoomController.getXmlDataById);
 
 // Route to retrieve OCI Cart data by ID
 router.get('/oci-data/:id', OciCartController.getDataById);
+
+// Route to retrieve the visitor count
+router.get('/visitor-count', VisitorController.getVisitorCount);
 
 
 module.exports = router;
