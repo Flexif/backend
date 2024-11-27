@@ -1,12 +1,17 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const VisitorsSchema = new mongoose.Schema({
-    counts: Number
-}, {
+const VisitorsSchema = new mongoose.Schema(
+  {
+    counts: Number,
+  },
+  {
     timestamps: true,
-    autoIndex: true
-});
+    autoIndex: true,
+  }
+);
 
-const VisitorsForm = mongoose.models.VisitorsForm || mongoose.model('VisitorsForm', VisitorsSchema);
+const VisitorsForm =
+  mongoose.models.VisitorsForm ||
+  mongoose.model("VisitorsForm", VisitorsSchema);
 
 module.exports = VisitorsForm;

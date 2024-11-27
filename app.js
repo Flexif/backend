@@ -1,21 +1,19 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const multer = require('multer');
-const apiRoutes = require('./routes/api');
-const xmlParser = require('express-xml-bodyparser');
-const dotenv = require('dotenv');
-
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const multer = require("multer");
+const apiRoutes = require("./routes/api");
+const xmlParser = require("express-xml-bodyparser");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
 const app = express();
 
-
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.text({ type: 'application/xml' }));
+app.use(bodyParser.text({ type: "application/xml" }));
 app.use(xmlParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -23,8 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const upload = multer();
 app.use(upload.none());
 
-
 // API routes
-app.use('/api', apiRoutes);
+app.use("/api", apiRoutes);
 
 module.exports = app;

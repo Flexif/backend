@@ -1,4 +1,4 @@
-const axios = require('axios');
+const axios = require("axios");
 
 const POSR = async (req, res) => {
   const { cxmlPayload, supplierUrl } = req.body;
@@ -6,7 +6,7 @@ const POSR = async (req, res) => {
   if (!cxmlPayload || !supplierUrl) {
     return res.status(400).json({
       success: false,
-      message: "cxmlPayload and supplierUrl are required."
+      message: "cxmlPayload and supplierUrl are required.",
     });
   }
 
@@ -19,24 +19,24 @@ const POSR = async (req, res) => {
     // Make the POST request to the supplier URL with cxmlPayload
     const response = await axios.post(supplierUrl, cxmlPayload, {
       headers: {
-        'Content-Type': 'application/xml',
+        "Content-Type": "application/xml",
       },
-      responseType: 'text',
+      responseType: "text",
     });
 
-    console.log('Response:', response.data);
-    
+    console.log("Response:", response.data);
+
     // Respond to the client
-    res.status(response.status)
-       .set('Content-Type', 'application/xml')
-       .send(response.data);
-    
+    res
+      .status(response.status)
+      .set("Content-Type", "application/xml")
+      .send(response.data);
   } catch (error) {
     console.error("Error making POST request:", error.message);
-    
+
     const statusCode = error.response?.status || 500;
     const errorMessage = error.response?.data || error.message;
-    
+
     res.status(statusCode).json({
       success: false,
       message: errorMessage,

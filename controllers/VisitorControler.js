@@ -1,4 +1,4 @@
-const VisitorsForm = require('../models/VisitorsModel');
+const VisitorsForm = require("../models/VisitorsModel");
 
 // Retrieve and increment visitor count from database
 const getVisitorCount = async (req, res) => {
@@ -18,7 +18,12 @@ const getVisitorCount = async (req, res) => {
     res.status(200).json({ count: visitorDoc.counts });
   } catch (error) {
     console.error("Error updating visitor count:", error);
-    res.status(500).json({ count: null, error: "Failed to retrieve and save visitor count" });
+    res
+      .status(500)
+      .json({
+        count: null,
+        error: "Failed to retrieve and save visitor count",
+      });
   }
 };
 

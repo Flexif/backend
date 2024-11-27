@@ -1,17 +1,20 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-
-const OciRoundtripSchema = new mongoose.Schema({
-    punchoutURL:  String,
+const OciRoundtripSchema = new mongoose.Schema(
+  {
+    punchoutURL: String,
     username: String,
     password: String,
-    hookURL: String
-},{
+    hookURL: String,
+  },
+  {
     timestamps: true,
-    autoIndex: true
-});
+    autoIndex: true,
+  }
+);
 
-const OciRoundtripForm = mongoose.models.OciRoundtripForm || mongoose.model('OciRoundtripForm', OciRoundtripSchema);
+const OciRoundtripForm =
+  mongoose.models.OciRoundtripForm ||
+  mongoose.model("OciRoundtripForm", OciRoundtripSchema);
 
-
-module.exports = OciRoundtripForm; 
+module.exports = OciRoundtripForm;
