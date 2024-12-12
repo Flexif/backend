@@ -20,7 +20,7 @@ const getSslTlsInfo = async (hostname) => {
     const socket = tls.connect(options, () => {
       const cert = socket.getPeerCertificate();
       const protocol = socket.getProtocol();
-      console.log("Connected with protocol:", protocol);
+      
 
       resolve({
         protocol: protocol,
@@ -50,11 +50,9 @@ const getSslTlsInfo = async (hostname) => {
     });
 
     socket.on("close", () => {
-      console.log("Socket closed");
     });
 
     socket.on("timeout", () => {
-      console.log("Socket timed out");
       socket.destroy();
       reject(new Error("Connection timed out"));
     });
@@ -138,7 +136,6 @@ const fetchWithRetry = async (url, retries = 2, delay = 1000) => {
   } catch (error) {
     console.error("Error during request:", error.message);
     if (retries > 0 && error.code === "ECONNRESET") {
-      console.log(`Retrying... Attempts remaining: ${retries}`);
       await new Promise((res) => setTimeout(res, delay));
       return fetchWithRetry(url, retries - 1, delay);
     }
@@ -148,8 +145,6 @@ const fetchWithRetry = async (url, retries = 2, delay = 1000) => {
 
 // Main controller function
 const CheckHeaders = async (req, res) => {
-  console.log("Request body:", req.body);
-  console.log("Request headers:", req.headers);
 
   const { punchoutURL } = req.body;
   if (!punchoutURL) {

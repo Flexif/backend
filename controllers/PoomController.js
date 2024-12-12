@@ -41,7 +41,7 @@ const getXmlDataById = async (req, res) => {
   try {
     console.log("Request from frontend", req.params.id);
     const cart = await cXMLCartForm.findById(req.params.id);
-    console.log("CART", cart);
+
 
     if (!cart) {
       return res
