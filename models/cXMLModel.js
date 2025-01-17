@@ -15,17 +15,10 @@ const cXMLSchema = new mongoose.Schema(
     sharedSecret: String,
     payloadId: String,
     timeStamp: String,
-    buyerCookie: String,
     browserFormPostURL: String,
     extrinsicUser: String,
     extrinsicUsername: String,
     extrinsicEmail: String,
-    contactName: String,
-    contactEmail: String,
-    noFrame: {
-      type: Boolean,
-      default: false,
-    },
     cXMLTemp: String,
   },
   {

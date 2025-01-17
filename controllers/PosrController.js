@@ -1,7 +1,8 @@
 const axios = require("axios");
+const cXMLPunchoutForm = require('../models/cXMLModel');
 
 const POSR = async (req, res) => {
-  const { cxmlPayload, supplierUrl } = req.body;
+  const { formData, cxmlPayload, supplierUrl } = req.body;
 
   if (!cxmlPayload || !supplierUrl) {
     return res.status(400).json({
@@ -11,10 +12,10 @@ const POSR = async (req, res) => {
   }
 
   try {
-    // Log session ID and other details
-    console.log("Session ID:", req.sessionID);
+    // Logs
     console.log("cxmlPayload:", cxmlPayload);
-    console.log("Supplier URL:", supplierUrl);
+    console.log("formdata:", formData);
+
 
     // Make the POST request to the supplier URL with cxmlPayload
     const response = await axios.post(supplierUrl, cxmlPayload, {
@@ -27,19 +28,36 @@ const POSR = async (req, res) => {
     console.log("Response:", response.data);
 
     // Respond to the client
-    res
-      .status(response.status)
-      .set("Content-Type", "application/xml")
-      .send(response.data);
+    res.status(response.status)
+       .set("Content-Type", "application/xml")
+       .send(response.data);
+    
+    const newRecord = new cXMLPunchoutForm({
+      punchoutURL: supplierUrl || '',
+      cXMLTemp: cxmlPayload || '',
+      fromDomain: formData.fromDomain || '',
+      fromIdentity: formData.fromIdentity || '',
+      toDomain: formData.toDomain || '',
+      toIdentity: formData.toIdentity || '',
+      senderDomain: formData.senderDomain || '',
+      senderIdentity: formData.senderIdentity || '',
+      sharedSecret: formData.sharedSecret || '',
+      payloadId: formData.PayloadId || '',
+      timeStamp: formData.timeStamp || '',
+      buyerCookie: formData.buyerCookie || '',
+      browserFormPostURL: formData.buyerUrl || '',
+      extrinsicUser: formData.extrinsicUser || '',
+      extrinsicUsername: formData.extrinsicUsername || '',
+      extrinsicEmail: formData.extrinsicEmail || '',
+    });
+
+    await newRecord.save();
+
   } catch (error) {
     console.error("Error making POST request:", error.message);
-
-    const statusCode = error.response?.status || 500;
-    const errorMessage = error.response?.data || error.message;
-
-    res.status(statusCode).json({
+    return res.status(500).json({
       success: false,
-      message: errorMessage,
+      message: `${error.message}.`
     });
   }
 };

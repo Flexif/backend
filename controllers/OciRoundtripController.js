@@ -51,8 +51,7 @@ const OciLogin = async (req, res) => {
     console.error("Error making POST request:", error.message);
     return res.status(500).json({
       success: false,
-      message: "Server error occurred while processing the request.",
-      error: error.message,
+      message: `${error.message}.`
     });
   }
 };
