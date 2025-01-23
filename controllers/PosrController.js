@@ -15,8 +15,6 @@ const POSR = async (req, res) => {
     // Logs
     console.log("cxmlPayload:", cxmlPayload);
     console.log("formdata:", formData);
-
-
     // Make the POST request to the supplier URL with cxmlPayload
     const response = await axios.post(supplierUrl, cxmlPayload, {
       headers: {
@@ -24,9 +22,7 @@ const POSR = async (req, res) => {
       },
       responseType: "text",
     });
-
     console.log("Response:", response.data);
-
     // Respond to the client
     res.status(response.status)
        .set("Content-Type", "application/xml")
@@ -57,7 +53,7 @@ const POSR = async (req, res) => {
     console.error("Error making POST request:", error.message);
     return res.status(500).json({
       success: false,
-      message: `${error.message}.`
+      message: `${error.message}. Please enter a valid Punchout URL.`
     });
   }
 };

@@ -4,7 +4,7 @@ const cXMLCartForm = require("../models/cXMLCartModel"); // Adjust the path if n
 const POOM = async (req, res) => {
   const frontendURL = process.env.NEXT_PUBLIC_FRONTEND_BASE_URL;
   console.log("Received JSON data:", req.body);
-
+  var body = req.body;
   try {
     // Directly access the 'cxml-urlencoded' field
     const xmlDoc = req.body["cxml-urlencoded"];
@@ -55,8 +55,8 @@ const getXmlDataById = async (req, res) => {
     // Parse XML to JSON
     parser.parseString(rawXml, (err, jsonResult) => {
       if (err) {
-        console.error("Error parsing XML:", err);
-        return res.status(500).json({ message: "Error parsing XML" });
+        console.error("Error parsing XML:", rawXml);
+        return res.status(500).json({message: `Error parsing cXML:  ${rawXml}`});
       }
 
       // Send both raw XML and parsed JSON in the response

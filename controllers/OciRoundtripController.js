@@ -51,7 +51,7 @@ const OciLogin = async (req, res) => {
     console.error("Error making POST request:", error.message);
     return res.status(500).json({
       success: false,
-      message: `${error.message}.`
+      message: `${error.message}. Please enter a valid Punchout URL.`
     });
   }
 };
