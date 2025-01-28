@@ -19,7 +19,7 @@ const POSR = async (req, res) => {
         "Content-Type": "application/xml",
       },
       responseType: "text",
-      timeout: 10000, // Increase to 10 seconds or more
+      timeout: 20000, // Increase to 10 seconds or more
     });
 
     // Regex to extract <Status> details from response.data
