@@ -4,6 +4,7 @@ const cXMLPunchoutForm = require("../models/cXMLModel");
 const POSR = async (req, res) => {
   const { formData, cxmlPayload, supplierUrl } = req.body;
 
+  // Input validation
   if (!cxmlPayload || !supplierUrl) {
     return res.status(400).json({
       success: false,
@@ -12,9 +13,6 @@ const POSR = async (req, res) => {
   }
 
   try {
-    // Logs
-    console.log("cxmlPayload:", cxmlPayload);
-    console.log("formdata:", formData);
     // Make the POST request to the supplier URL with cxmlPayload
     const response = await axios.post(supplierUrl, cxmlPayload, {
       headers: {
@@ -23,57 +21,56 @@ const POSR = async (req, res) => {
       responseType: "text",
     });
 
-    console.log("Response:", response.data);
-    // Regex to extract the code and text from the <Status> tag
+    // Regex to extract <Status> details from response.data
     const statusRegex =
       /<Status code="(\d+)" text="([^"]+)">\s*([\s\S]*?)\s*<\/Status>/;
-
     const match = response.data.match(statusRegex);
 
     if (match) {
       const statusCode = parseInt(match[1], 10); // Extracted status code
-      const statusText = match[3].trim(); // Extracted detailed text inside <Status>
+      const statusMessage = match[3].trim(); // Extracted detailed text inside <Status>
 
+      // If status code is not 200, return error message
       if (statusCode !== 200) {
-        // If the status code is not 200, return an error message
-        return res.status(statusCode).send({
+        return res.status(statusCode).json({
           success: false,
-          message: `Error: ${statusText}`,
+          message: `Error: ${statusMessage}`,
         });
       }
     }
 
-    // Respond to the client
-    res
-      .status(response.status)
-      .set("Content-Type", "application/xml")
-      .send(response.data);
-
+    // Save the data to the database
     const newRecord = new cXMLPunchoutForm({
       punchoutURL: supplierUrl || "",
       cXMLTemp: cxmlPayload || "",
-      fromDomain: formData.fromDomain || "",
-      fromIdentity: formData.fromIdentity || "",
-      toDomain: formData.toDomain || "",
-      toIdentity: formData.toIdentity || "",
-      senderDomain: formData.senderDomain || "",
-      senderIdentity: formData.senderIdentity || "",
-      sharedSecret: formData.sharedSecret || "",
-      payloadId: formData.PayloadId || "",
-      timeStamp: formData.timeStamp || "",
-      buyerCookie: formData.buyerCookie || "",
-      browserFormPostURL: formData.buyerUrl || "",
-      extrinsicUser: formData.extrinsicUser || "",
-      extrinsicUsername: formData.extrinsicUsername || "",
-      extrinsicEmail: formData.extrinsicEmail || "",
+      fromDomain: formData?.fromDomain || "",
+      fromIdentity: formData?.fromIdentity || "",
+      toDomain: formData?.toDomain || "",
+      toIdentity: formData?.toIdentity || "",
+      senderDomain: formData?.senderDomain || "",
+      senderIdentity: formData?.senderIdentity || "",
+      sharedSecret: formData?.sharedSecret || "",
+      payloadId: formData?.PayloadId || "",
+      timeStamp: formData?.timeStamp || "",
+      buyerCookie: formData?.buyerCookie || "",
+      browserFormPostURL: formData?.buyerUrl || "",
+      extrinsicUser: formData?.extrinsicUser || "",
+      extrinsicUsername: formData?.extrinsicUsername || "",
+      extrinsicEmail: formData?.extrinsicEmail || "",
     });
 
     await newRecord.save();
+
+    // Send the successful response back to the client
+    return res
+      .status(response.status)
+      .set("Content-Type", "application/xml")
+      .send(response.data);
   } catch (error) {
     console.error("Error making POST request:", error.message);
     return res.status(500).json({
       success: false,
-      message: `${error.message}. Please enter a valid Punchout URL.`,
+      message: `Server error: ${error.message}. Please verify the Punchout URL.`,
     });
   }
 };
