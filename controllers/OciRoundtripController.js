@@ -31,9 +31,13 @@ const OciLogin = async (req, res) => {
     try {
       // Check the method and choose the appropriate axios request
       if (method === "POST") {
-        response = await axios.post(OciPunchoutURL);
+        response = await axios.post(OciPunchoutURL, null, {
+          timeout: 10000, // Timeout in milliseconds (10 seconds in this example)
+        });
       } else if (method === "GET") {
-        response = await axios.get(OciPunchoutURL);
+        response = await axios.post(OciPunchoutURL, null, {
+          timeout: 10000, // Timeout in milliseconds (10 seconds in this example)
+        });
       } else {
         return res.status(400).json({
           success: false,

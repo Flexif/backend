@@ -19,11 +19,11 @@ const POSR = async (req, res) => {
         "Content-Type": "application/xml",
       },
       responseType: "text",
+      timeout: 10000, // Increase to 10 seconds or more
     });
 
     // Regex to extract <Status> details from response.data
-    const statusRegex =
-      /<Status code="(\d+)" text="([^"]+)">\s*([\s\S]*?)\s*<\/Status>/;
+    const statusRegex = /<Status code="(\d+)" text="([^"]+)">\s*([\s\S]*?)\s*<\/Status>/;
     const match = response.data.match(statusRegex);
 
     if (match) {
