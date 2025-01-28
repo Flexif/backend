@@ -3,7 +3,8 @@ const OciRoundtripForm = require("../models/OciRoundtripModel");
 
 const OciLogin = async (req, res) => {
   const backendURL = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
-  const { baseURL, username, password, hookURL } = req.body;
+  const { baseURL, username, password, hookURL, method } = req.body;
+  console.log('Method', method);
 
   // Input validation: Ensure the baseURL, username, and password are provided
   if (!baseURL || !username || !password || !hookURL) {
@@ -28,9 +29,21 @@ const OciLogin = async (req, res) => {
     const OciPunchoutURL = `${url.origin}${url.pathname}?${params.toString()}`;
     // console log the new Punchout URL
 
-    // Perform the axios POST request to the new URL
-    const response = await axios.post(OciPunchoutURL);
-
+    let response;
+    try {
+      // Check the method and choose the appropriate axios request
+      if (method === 'POST') {
+        response = await axios.post(OciPunchoutURL);
+        console.log("POST request success");
+      } else if (method === 'GET') {
+        response = await axios.get(OciPunchoutURL);
+        console.log("GET request success");
+      }
+    } catch (error) {
+      console.error(`${method} request failed:`, error.message);
+      // You can handle any fallback logic here if needed, such as retrying the request
+    }
+    
     // Save the data to the database
     const newRecord = new OciRoundtripForm({
       punchoutURL: baseURL,
@@ -48,10 +61,9 @@ const OciLogin = async (req, res) => {
     });
   } catch (error) {
     // Handle any errors and send a response
-    console.error("Error making POST request:", error.message);
     return res.status(500).json({
       success: false,
-      message: `${error.message}. Please enter a valid Punchout URL.`
+      message: `${error.message}. Please review your configurations.`
     });
   }
 };
