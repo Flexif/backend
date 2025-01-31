@@ -7,10 +7,16 @@ const OciLogin = async (req, res) => {
   console.log("Method", method);
 
   // Input validation: Ensure the baseURL, username, and password are provided
-  if (!baseURL?.trim() || !username?.trim() || !password?.trim() || !hookURL?.trim()) {
+  if (
+    !baseURL?.trim() ||
+    !username?.trim() ||
+    !password?.trim() ||
+    !hookURL?.trim()
+  ) {
     return res.status(400).json({
       success: false,
-      message: "Please verify that the username, password, and hook URL are all entered correctly.",
+      message:
+        "Please verify that the username, password, and hook URL are all entered correctly.",
     });
   }
 
@@ -45,11 +51,18 @@ const OciLogin = async (req, res) => {
         });
       }
     } catch (error) {
-      console.error(`${method} request failed:`, error.response?.data || error.message);
-      return res.status(400).json({
-        success: false,
-        message: `Failed to make the ${method} request to the OCI Punchout URL. ${error.message}`,
-      });
+      console.error("error", error.status);
+      if (error.status === 401) {
+        return res.status(200).json({
+          success: true,
+          response: OciPunchoutURL,
+        });
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: `${error.message}. Failed to make the ${method} request to the OCI Punchout URL.`,
+        });
+      }
     }
 
     // Ensure response exists before proceeding

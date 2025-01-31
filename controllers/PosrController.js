@@ -23,7 +23,8 @@ const POSR = async (req, res) => {
     });
 
     // Regex to extract <Status> details from response.data
-    const statusRegex = /<Status code="(\d+)" text="([^"]+)">\s*([\s\S]*?)\s*<\/Status>/;
+    const statusRegex =
+      /<Status code="(\d+)" text="([^"]+)">\s*([\s\S]*?)\s*<\/Status>/;
     const match = response.data.match(statusRegex);
 
     if (match) {
@@ -75,6 +76,4 @@ const POSR = async (req, res) => {
   }
 };
 
-module.exports = {
-  POSR,
-};
+module.exports = {POSR};
